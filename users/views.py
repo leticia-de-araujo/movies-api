@@ -5,7 +5,7 @@ from rest_framework.authentication import TokenAuthentication
 from django.shortcuts import get_object_or_404
 
 from .models import User
-from .permissions import isAdmin
+from .permissions import isAdmin, isAccountOwnerOrAdmin
 from .serializers import UserSerializer, UserLoginSerializer
 
 
@@ -51,10 +51,12 @@ class UserListView(APIView):
 
 class UserListDetailView(APIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [isAdmin]
+    permission_classes = [isAccountOwnerOrAdmin]
 
     def get(self, request: Request, user_id: int) -> Response:
         user = get_object_or_404(User, id=user_id)
+
+        self.check_object_permissions(request, user)
 
         serializer = UserSerializer(user)
 
