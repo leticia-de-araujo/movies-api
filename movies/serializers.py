@@ -23,8 +23,34 @@ class MovieSerializer(serializers.Serializer):
         for genre in genres_data:
             genre_dict = dict(genre)
 
-            genre, _ = Genre.objects.get_or_create(**genre_dict)
+            genre_obj, _ = Genre.objects.get_or_create(**genre_dict)
 
-            genre.movies.add(movie)
+            genre_obj.movies.add(movie)
 
         return movie
+
+    def update(self, instance: Movie, validated_data: dict) -> Movie:
+
+        for key, value in validated_data.items():
+            if key == "genres":
+                genres = Genre.objects.all()
+
+                new_movies = [instance]
+
+                for old_genre in genres:
+                    if old_genre.movies.filter(id=instance.id):
+                        old_genre.movies.clear()
+
+                for genre in value:
+                    genre_dict = dict(genre)
+
+                    genre_obj, _ = Genre.objects.get_or_create(**genre_dict)
+
+                    genre_obj.movies.set(new_movies)
+
+            else:
+                setattr(instance, key, value)
+
+        instance.save()
+
+        return instance

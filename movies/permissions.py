@@ -4,7 +4,7 @@ from rest_framework.views import Request, View
 from .models import Movie
 
 
-class isAdminOrReadOnly(permissions.BasePermission):
+class IsAdminOrReadOnly(permissions.BasePermission):
     def has_permission(self, request: Request, view: View) -> bool:
         return (
             request.method == "GET"

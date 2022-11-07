@@ -12,7 +12,7 @@ class Review(models.Model):
     stars = models.IntegerField()
     review = models.TextField()
     spoilers = models.BooleanField(default=False, null=True)
-    recommendation = models.CharField(
+    recomendation = models.CharField(
         max_length=50,
         choices=RecommendationOptions.choices,
         default=RecommendationOptions.DEFAULT,

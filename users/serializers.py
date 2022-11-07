@@ -44,3 +44,9 @@ class UserSerializer(serializers.Serializer):
 class UserLoginSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=20, write_only=True)
     password = serializers.CharField(write_only=True)
+
+
+class UserReviewSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    first_name = serializers.CharField(max_length=50)
+    last_name = serializers.CharField(max_length=50)
